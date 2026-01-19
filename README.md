@@ -42,6 +42,21 @@
 
 ## 🚀 安装方法
 
+### 方法一：从源码打包
+
+```bash
+# 克隆仓库
+git clone https://github.com/xx2468171796/AInext.git
+cd AInext
+
+# 打包扩展
+npx @vscode/vsce package --allow-missing-repository
+
+# 安装生成的 .vsix 文件
+```
+
+### 方法二：直接安装 VSIX
+
 1. 下载最新版本 `.vsix` 文件
 2. 在 VSCode/Windsurf 中：
    - 按 `Ctrl+Shift+P`
@@ -70,18 +85,18 @@
 ## 📁 项目结构
 
 ```
-lixiangniuma/
-├── niuma-vsix-unpacked/
-│   └── extension/
-│       ├── extension.js      # 扩展主逻辑
-│       ├── webview.html      # 侧边栏 UI
-│       ├── dialog.html       # 弹窗 UI（备用）
-│       ├── alonemoshi.js     # 弹窗触发脚本
-│       ├── package.json      # 扩展配置
-│       ├── default_sound.wav # 默认提示音
-│       └── icon.ico          # 扩展图标
-├── .windsurfrules            # Windsurf AI 规则
-└── README.md                 # 本文档
+AInext/
+├── extension.js       # 扩展主逻辑
+├── webview.html       # 侧边栏 UI
+├── dialog.html        # 弹窗 UI（备用）
+├── alonemoshi.js      # 弹窗触发脚本
+├── package.json       # 扩展配置
+├── default_sound.wav  # 默认提示音
+├── icon.ico           # 扩展图标
+├── icon.svg           # 扩展图标 SVG
+├── LICENSE            # MIT 许可证
+├── .windsurfrules     # Windsurf AI 规则示例
+└── README.md          # 本文档
 ```
 
 ## 🔧 技术栈
@@ -94,7 +109,8 @@ lixiangniuma/
 ## 📝 更新日志
 
 ### v4.1.1 (2026-01-19)
-- 移除 QQ 群信息
+- 重构项目结构
+- 移除冗余文件
 
 ### v4.1.0
 - 弹窗支持自定义模型输入
