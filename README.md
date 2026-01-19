@@ -2,6 +2,13 @@
 
 > 让 AI 不再偷懒，持续工作直到你满意
 
+## 📢 项目信息
+
+**作者**：孤独制作  
+**电报群**：[点击加入](https://t.me/+RZMe7fnvvUg1OWJl)  
+
+---
+
 ## 📖 简介
 
 **Alone模式** 是一个 VSCode/Windsurf 扩展，通过在 AI 想要结束对话时弹出确认窗口，让用户决定是否继续或结束。这样可以让 AI 持续工作，避免 AI "偷懒"提前结束任务。
@@ -131,4 +138,19 @@ MIT License
 
 ---
 
-**Alone模式** - 让 AI 持续工作，直到你满意 🚀
+## 🤝 反馈与支持
+
+如有问题或建议，欢迎：
+
+- 📮 提交 [Issue](https://github.com/xx2468171796/AInext/issues)
+- 💬 加入 [电报群](https://t.me/+RZMe7fnvvUg1OWJl) 交流
+
+---
+
+<div align="center">
+
+**⭐ 如果觉得有用，欢迎 Star 支持！**
+
+Made with ❤️ by 孤独制作
+
+</div>
