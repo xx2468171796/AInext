@@ -1,0 +1,12 @@
+This is a demonstration file created by the AI assistant.
+It shows how the write_to_file tool works.
+
+Current timestamp: 2026-01-09
+Tools demonstrated:
+- list_dir
+- find_by_name  
+- read_file
+- grep_search
+- bash
+- todo_list
+- write_to_file

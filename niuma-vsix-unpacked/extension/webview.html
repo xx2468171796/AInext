@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alone模式</title>
+  <style>
+    :root {
+      /* 浅色主题 */
+      --bg0: #f5f7fa;
+      --bg1: rgba(255,255,255,0.95);
+      --bg2: rgba(240,242,245,0.9);
+      --glass: rgba(0,0,0,0.02);
+      --glass-border: rgba(0,0,0,0.08);
+      --text: #1a1a2e;
+      --text2: #64748b;
+      --accent: #3b82f6;
+      --accent2: #8b5cf6;
+      --success: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg0);
+      color: var(--text);
+      padding: 12px;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    /* Logo Header */
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px;
+      background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(139,92,246,0.08));
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      margin-bottom: 12px;
+    }
+    .logo {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      box-shadow: 0 8px 24px rgba(77,163,255,0.3);
+    }
+    .header-text h1 {
+      font-size: 16px;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--text), var(--text2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .header-text p {
+      font-size: 11px;
+      color: var(--text2);
+      margin-top: 2px;
+    }
+
+    /* Card */
+    .card {
+      background: var(--bg1);
+      -webkit-backdrop-filter: blur(20px);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .card-title {
+      font-size: 11px;
+      color: var(--text2);
+      margin-bottom: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Status Badge */
+    .status-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-weight: 500;
+      font-size: 12px;
+    }
+    .status-badge.online {
+      background: linear-gradient(135deg, rgba(34,197,94,0.2), rgba(34,197,94,0.05));
+      color: var(--success);
+      border: 1px solid rgba(34,197,94,0.3);
+    }
+    .status-badge.offline {
+      background: linear-gradient(135deg, rgba(239,68,68,0.2), rgba(239,68,68,0.05));
+      color: var(--danger);
+      border: 1px solid rgba(239,68,68,0.3);
+    }
+    .port-info {
+      font-size: 11px;
+      color: var(--text2);
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+    .stat-item {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+      padding: 12px 8px;
+      text-align: center;
+    }
+    .stat-value {
+      font-size: 22px;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .stat-value.success {
+      background: linear-gradient(135deg, var(--success), #16a34a);
+      -webkit-background-clip: text;
+    }
+    .stat-value.danger {
+      background: linear-gradient(135deg, var(--danger), #dc2626);
+      -webkit-background-clip: text;
+    }
+    .stat-label {
+      font-size: 10px;
+      color: var(--text2);
+      margin-top: 4px;
+    }
+
+    /* Toggle Switch */
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 14px;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+    }
+    .toggle-label {
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .toggle-switch {
+      position: relative;
+      width: 44px;
+      height: 24px;
+    }
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255,255,255,0.1);
+      border-radius: 24px;
+      transition: 0.3s;
+    }
+    .toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background: white;
+      border-radius: 50%;
+      transition: 0.3s;
+    }
+    input:checked + .toggle-slider {
+      background: linear-gradient(135deg, var(--success), #16a34a);
+    }
+    input:checked + .toggle-slider:before {
+      transform: translateX(20px);
+    }
+
+    /* Buttons */
+    .btn {
+      width: 100%;
+      padding: 12px 16px;
+      border: none;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(77,163,255,0.3);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(77,163,255,0.4);
+    }
+    .btn-secondary {
+      background: var(--glass);
+      color: var(--text);
+      border: 1px solid var(--glass-border);
+    }
+    .btn-secondary:hover {
+      border-color: var(--accent);
+      background: var(--bg2);
+    }
+    .btn-danger {
+      background: linear-gradient(135deg, var(--danger), #dc2626);
+      color: #fff;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 12px;
+      font-size: 11px;
+      color: var(--text2);
+    }
+    .footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-100px);
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 12px;
+      z-index: 1000;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+    .toast-success { background: var(--success); color: #fff; }
+    .toast-error { background: var(--danger); color: #fff; }
+    .toast-info { background: var(--accent); color: #fff; }
+
+    .hidden { display: none !important; }
+
+    /* Login Card */
+    .login-card {
+      text-align: center;
+      padding: 24px 16px;
+    }
+    .login-card h2 {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+    .login-card p {
+      color: var(--text2);
+      margin-bottom: 16px;
+    }
+    .input-group {
+      margin-bottom: 12px;
+    }
+    .input-group input {
+      width: 100%;
+      padding: 12px 14px;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+      color: var(--text);
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .input-group input:focus {
+      border-color: var(--accent);
+    }
+    .input-group input::placeholder {
+      color: var(--text2);
+    }
+  </style>
+</head>
+<body>
+  <div id="toast" class="toast"></div>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="logo">🐴</div>
+    <div class="header-text">
+      <h1>Alone模式</h1>
+      <p>让 AI 不再偷懒</p>
+    </div>
+  </div>
+
+  <!-- Main View (免费版：直接显示) -->
+  <div id="mainView">
+    <!-- Status Card -->
+    <div class="card">
+      <div class="card-title">服务状态</div>
+      <div class="status-row">
+        <span class="status-badge online" id="statusBadge">🟢 运行中</span>
+        <span class="port-info" id="portInfo">端口: 3457</span>
+      </div>
+      <div class="toggle-row">
+        <span class="toggle-label">Alone模式</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="niumaToggle" checked onchange="toggleNiuma()">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Stats Card -->
+    <div class="card">
+      <div class="card-title">📊 牛马效果统计</div>
+      <div class="stats-grid">
+        <div class="stat-item" onclick="resetStat('total')" style="cursor:pointer;" title="点击重置">
+          <div class="stat-value" id="statTotal">0</div>
+          <div class="stat-label">总弹窗 🔄</div>
+        </div>
+        <div class="stat-item" onclick="resetStat('sessions')" style="cursor:pointer;" title="点击重置">
+          <div class="stat-value danger" id="statSessions">0</div>
+          <div class="stat-label">会话数 🔄</div>
+        </div>
+        <div class="stat-item" onclick="resetStat('current')" style="cursor:pointer;" title="点击重置">
+          <div class="stat-value success" id="statAvg">0</div>
+          <div class="stat-label">本轮弹窗 🔄</div>
+        </div>
+      </div>
+      <div class="compare-box" style="margin-top:12px;padding:10px;background:rgba(62,207,142,0.1);border:1px solid rgba(62,207,142,0.3);border-radius:8px;font-size:11px;color:var(--success);">
+        💡 没有Alone模式，AI 会在第1次就结束。Alone帮你多获得了 <strong id="statSaved">0</strong> 次交互！
+      </div>
+      <button class="btn btn-secondary" onclick="resetStats()" style="margin-top:10px;font-size:12px;padding:8px 12px;">
+        🔄 重置全部统计
+      </button>
+    </div>
+
+    <!-- History Card -->
+    <div class="card">
+      <div class="card-title">📚 对话记忆</div>
+      <div class="toggle-row" style="margin-bottom:10px;">
+        <span class="toggle-label">上下文存储</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="historyToggle" checked onchange="toggleHistory()">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+      <button class="btn btn-primary" onclick="showHistory()" style="margin-bottom: 8px;">
+        📂 查看历史记录
+      </button>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-secondary" onclick="exportHistory()" style="flex:1;">
+          📤 导出
+        </button>
+        <button class="btn btn-secondary" onclick="importHistory()" style="flex:1;">
+          📥 导入
+        </button>
+      </div>
+    </div>
+
+    <!-- Tools Card (从 ask-continue 移植) -->
+    <div class="card">
+      <div class="card-title">🛠️ 工具箱</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <button class="btn btn-secondary" onclick="openPrefixManager()">
+          ⚙️ 快捷前缀管理
+        </button>
+        <button class="btn btn-secondary" onclick="openPromptLibrary()">
+          📚 提示词库
+        </button>
+        <button class="btn btn-secondary" onclick="openExportImport()">
+          📦 导入/导出数据
+        </button>
+        <button class="btn btn-primary" onclick="forcePopup()">
+          🔔 手动触发弹窗
+        </button>
+      </div>
+    </div>
+    
+    <!-- Sound Settings Card -->
+    <div class="card">
+      <div class="card-title">🔊 提示音设置</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <button class="btn btn-secondary" onclick="selectCustomSound()">
+          🎵 选择自定义提示音
+        </button>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-secondary" onclick="testSound()" style="flex:1;">
+            ▶️ 测试
+          </button>
+          <button class="btn btn-secondary" onclick="clearCustomSound()" style="flex:1;">
+            🔄 恢复默认
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- AI Optimizer Settings Card -->
+    <div class="card">
+      <div class="card-title">✨ AI 优化提示词</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <span style="font-size:12px;color:var(--fg2);">启用 AI 优化</span>
+          <label class="switch">
+            <input type="checkbox" id="aiOptimizerToggle" onchange="toggleAiOptimizer()">
+            <span class="slider"></span>
+          </label>
+        </div>
+        <select id="aiPlatform" onchange="updateAiPlatform()" style="padding:8px;border-radius:6px;border:1px solid var(--stroke);background:var(--bg1);color:var(--fg0);font-size:12px;">
+          <option value="siliconflow">硅基流动 SiliconFlow</option>
+          <option value="zhipu">智谱 Zhipu</option>
+          <option value="openai">OpenAI 兼容</option>
+        </select>
+        <input type="password" id="aiApiKey" placeholder="API Key" style="padding:8px;border-radius:6px;border:1px solid var(--stroke);background:var(--bg1);color:var(--fg0);font-size:12px;">
+        <input type="text" id="aiApiUrl" placeholder="API URL" style="padding:8px;border-radius:6px;border:1px solid var(--stroke);background:var(--bg1);color:var(--fg0);font-size:12px;">
+        <select id="aiModel" style="padding:8px;border-radius:6px;border:1px solid var(--stroke);background:var(--bg1);color:var(--fg0);font-size:12px;">
+          <option value="GLM-4.7">GLM-4.7 (最强编程)</option>
+          <option value="GLM-4.6">GLM-4.6</option>
+          <option value="GLM-4.5-air">GLM-4.5-air (快速)</option>
+        </select>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:4px;">
+          <span style="font-size:12px;color:var(--fg2);">🧠 思考模式</span>
+          <label class="switch">
+            <input type="checkbox" id="aiThinkingMode" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div style="margin-top:4px;">
+          <span style="font-size:11px;color:var(--fg2);">📝 预设提示词（可选，留空使用默认）</span>
+          <textarea id="aiCustomPrompt" placeholder="输入你的预设提示词，AI会用这个提示词来优化你的对话内容..." style="width:100%;min-height:80px;padding:8px;border-radius:6px;border:1px solid var(--stroke);background:var(--bg1);color:var(--fg0);font-size:12px;resize:vertical;margin-top:4px;box-sizing:border-box;"></textarea>
+        </div>
+        <button class="btn btn-primary" onclick="saveAiOptimizerConfig()">
+          💾 保存配置
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    Alone模式 v4.1
+  </div>
+
+  <script>
+    const vscode = acquireVsCodeApi();
+
+    // 初始化
+    window.addEventListener('load', () => {
+      vscode.postMessage({ type: 'init' });
+    });
+
+    // 接收消息
+    window.addEventListener('message', (event) => {
+      const message = event.data;
+      switch (message.type) {
+        case 'updateData':
+          updateUI(message);
+          break;
+        case 'showToast':
+          showToast(message.message, message.toastType);
+          break;
+        case 'updateStats':
+          updateStats(message.stats);
+          break;
+      }
+    });
+
+    // 更新 UI（免费版：简化逻辑）
+    function updateUI(data) {
+      // 更新端口信息
+      if (data.mcpPort) {
+        document.getElementById('portInfo').textContent = `端口: ${data.mcpPort}`;
+      }
+
+      // 更新开关状态
+      const toggle = document.getElementById('niumaToggle');
+      toggle.checked = data.enabled !== false;
+      
+      // 更新历史存储开关
+      const historyToggle = document.getElementById('historyToggle');
+      if (historyToggle) {
+        historyToggle.checked = data.historyEnabled !== false;
+      }
+
+      // 更新统计
+      if (data.stats) {
+        updateStats(data.stats);
+      }
+      
+      // 更新 AI 优化配置
+      if (data.aiOptimizerConfig) {
+        updateAiOptimizerUI(data.aiOptimizerConfig);
+      }
+    }
+
+    // 更新统计
+    function updateStats(stats) {
+      if (!stats) return;
+      const total = stats.totalCalls || 0;           // 累计总弹窗
+      const currentSession = stats.currentSessionCalls || 0;  // 本轮弹窗
+      const sessionCount = stats.sessionCount || 0;  // 累计会话数
+      // saved = 本轮弹窗数（没有牛马这些交互都不会发生）
+      const saved = currentSession;
+      
+      document.getElementById('statTotal').textContent = total;
+      document.getElementById('statSessions').textContent = sessionCount;  // 显示会话数
+      document.getElementById('statAvg').textContent = currentSession;  // 本轮弹窗
+      document.getElementById('statSaved').textContent = saved;
+    }
+
+    // 切换开关
+    function toggleNiuma() {
+      const enabled = document.getElementById('niumaToggle').checked;
+      vscode.postMessage({ type: 'toggleNiuma', enabled: enabled });
+    }
+
+    // 切换历史存储
+    function toggleHistory() {
+      const enabled = document.getElementById('historyToggle').checked;
+      vscode.postMessage({ type: 'toggleHistory', enabled: enabled });
+    }
+
+    // 查看历史记录
+    function showHistory() {
+      vscode.postMessage({ type: 'showHistory' });
+    }
+
+    // 导出历史
+    function exportHistory() {
+      vscode.postMessage({ type: 'exportHistory' });
+    }
+
+    // 导入历史
+    function importHistory() {
+      vscode.postMessage({ type: 'importHistory' });
+    }
+
+    // 打开快捷前缀管理
+    function openPrefixManager() {
+      vscode.postMessage({ type: 'openPrefixManager' });
+    }
+
+    // 打开提示词库
+    function openPromptLibrary() {
+      vscode.postMessage({ type: 'openPromptLibrary' });
+    }
+
+    // 打开导入导出面板
+    function openExportImport() {
+      vscode.postMessage({ type: 'openExportImport' });
+    }
+
+    // 手动触发弹窗
+    function forcePopup() {
+      vscode.postMessage({ type: 'forcePopup' });
+    }
+
+    // 选择自定义提示音
+    function selectCustomSound() {
+      vscode.postMessage({ type: 'selectCustomSound' });
+    }
+
+    // 测试提示音
+    function testSound() {
+      vscode.postMessage({ type: 'testSound' });
+    }
+
+    // 恢复默认提示音
+    function clearCustomSound() {
+      vscode.postMessage({ type: 'clearCustomSound' });
+    }
+
+    // AI 优化配置相关
+    const platformDefaults = {
+      siliconflow: { url: 'https://api.siliconflow.cn/v1/chat/completions', model: 'Qwen/Qwen2.5-7B-Instruct' },
+      zhipu: { url: 'https://open.bigmodel.cn/api/coding/paas/v4/chat/completions', model: 'GLM-4.7' },
+      openai: { url: 'https://api.openai.com/v1/chat/completions', model: 'gpt-3.5-turbo' }
+    };
+
+    function toggleAiOptimizer() {
+      const enabled = document.getElementById('aiOptimizerToggle').checked;
+      vscode.postMessage({ type: 'updateAiOptimizerConfig', config: { enabled } });
+    }
+
+    function updateAiPlatform() {
+      const platform = document.getElementById('aiPlatform').value;
+      const defaults = platformDefaults[platform] || platformDefaults.siliconflow;
+      document.getElementById('aiApiUrl').value = defaults.url;
+      document.getElementById('aiModel').value = defaults.model;
+    }
+
+    function saveAiOptimizerConfig() {
+      const config = {
+        platform: document.getElementById('aiPlatform').value,
+        apiKey: document.getElementById('aiApiKey').value,
+        apiUrl: document.getElementById('aiApiUrl').value,
+        model: document.getElementById('aiModel').value,
+        enabled: document.getElementById('aiOptimizerToggle').checked,
+        customPrompt: document.getElementById('aiCustomPrompt').value,
+        thinkingMode: document.getElementById('aiThinkingMode').checked
+      };
+      vscode.postMessage({ type: 'saveAiOptimizerConfig', config });
+      showToast('AI 优化配置已保存', 'success');
+    }
+
+    function updateAiOptimizerUI(config) {
+      if (!config) return;
+      document.getElementById('aiOptimizerToggle').checked = config.enabled || false;
+      document.getElementById('aiPlatform').value = config.platform || 'zhipu';
+      document.getElementById('aiApiKey').value = config.apiKey || '';
+      document.getElementById('aiApiUrl').value = config.apiUrl || platformDefaults.zhipu.url;
+      document.getElementById('aiModel').value = config.model || platformDefaults.zhipu.model;
+      document.getElementById('aiCustomPrompt').value = config.customPrompt || '';
+      document.getElementById('aiThinkingMode').checked = config.thinkingMode !== false;
+    }
+
+    // 重置全部统计（直接执行，无需确认）
+    function resetStats() {
+      vscode.postMessage({ type: 'resetStats', target: 'all' });
+      showToast('统计已重置', 'success');
+    }
+
+    // 重置单个统计项（直接执行，无需确认）
+    function resetStat(target) {
+      vscode.postMessage({ type: 'resetStats', target: target });
+      const names = { total: '总弹窗', sessions: '会话数', current: '本轮弹窗' };
+      showToast(`"${names[target]}"已重置`, 'success');
+    }
+
+    // 显示 Toast
+    function showToast(text, type = 'info') {
+      const toast = document.getElementById('toast');
+      toast.textContent = text;
+      toast.className = `toast toast-${type} show`;
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2500);
+    }
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+# Node modules
+node_modules/
+
+# Build outputs
+*.vsix
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Local config (contains API keys)
+.alone-mcp/
+
+# OpenSpec internal files
+openspec/
+
+# Temporary files
+*.tmp
+*.temp

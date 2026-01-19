@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>牛马模式 - 继续确认</title>
+  <style>
+    :root {
+      --bg-primary: #1e1e1e;
+      --bg-secondary: #252526;
+      --bg-hover: #2a2d2e;
+      --text-primary: #cccccc;
+      --text-secondary: #858585;
+      --accent-primary: #0e639c;
+      --accent-hover: #1177bb;
+      --success: #4caf50;
+      --warning: #ff9800;
+      --error: #f44336;
+      --border: #3c3c3c;
+      --card-bg: #2d2d2d;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: transparent;
+      color: var(--text-primary);
+      font-size: 14px;
+      line-height: 1.5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .dialog {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 24px;
+      max-width: 450px;
+      width: 100%;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--border);
+      animation: scaleIn 0.25s ease;
+    }
+
+    @keyframes scaleIn {
+      from { 
+        opacity: 0; 
+        transform: scale(0.9) translateY(-10px); 
+      }
+      to { 
+        opacity: 1; 
+        transform: scale(1) translateY(0); 
+      }
+    }
+
+    .dialog-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .dialog-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #fff;
+      padding: 2px;
+    }
+
+    .dialog-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .dialog-reason {
+      margin: 16px 0;
+      padding: 14px 18px;
+      background: var(--bg-secondary);
+      border-radius: 10px;
+      color: var(--text-secondary);
+      font-size: 14px;
+      border-left: 4px solid #ff9800;
+      word-break: break-word;
+    }
+
+    .dialog-reason-label {
+      font-size: 11px;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    /* Image Upload - Compact Style */
+    .att-section {
+      margin-top: 10px;
+      display: none;
+    }
+    .att-section.show { display: block; }
+    .att-title { font-size: 11px; color: var(--text-secondary); margin-bottom: 6px; }
+    .att-list { display: flex; flex-wrap: wrap; gap: 8px; }
+    .att-img {
+      position: relative;
+      width: 50px; height: 50px;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .att-img img { width: 100%; height: 100%; object-fit: cover; }
+    .att-img .idel {
+      position: absolute;
+      top: 2px; right: 2px;
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      background: rgba(244,67,54,0.9);
+      color: #fff;
+      font-size: 10px;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .upload-hint {
+      font-size: 11px;
+      color: var(--text-secondary);
+      margin-top: 6px;
+    }
+
+    /* 多图预览网格 */
+    .images-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .image-item {
+      position: relative;
+      aspect-ratio: 1;
+      border-radius: 6px;
+      overflow: hidden;
+      background: var(--bg-primary);
+    }
+
+    .image-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .image-item .remove-btn {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.7);
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .image-item:hover .remove-btn {
+      opacity: 1;
+    }
+
+    .image-count {
+      font-size: 12px;
+      color: var(--text-secondary);
+      text-align: center;
+      margin-top: 6px;
+    }
+
+    .image-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .image-actions .btn {
+      width: auto;
+      padding: 6px 14px;
+      font-size: 12px;
+    }
+
+    /* Input Area */
+    .input-container {
+      margin-bottom: 16px;
+    }
+
+    .input-label {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .dialog-input {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      font-size: 14px;
+      resize: vertical;
+      min-height: 60px;
+      max-height: 300px;
+      font-family: inherit;
+      transition: border-color 0.2s;
+    }
+
+    .dialog-input:focus {
+      outline: none;
+      border-color: var(--accent-primary);
+    }
+
+    .dialog-input::placeholder {
+      color: var(--text-secondary);
+    }
+
+    /* Shortcuts Hint */
+    .shortcuts-hint {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+      padding: 10px;
+      background: var(--bg-secondary);
+      border-radius: 8px;
+    }
+
+    .shortcut-key {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .shortcut-key kbd {
+      background: var(--bg-hover);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 3px 8px;
+      font-size: 11px;
+      font-family: monospace;
+    }
+
+    /* Buttons */
+    .dialog-buttons {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px 24px;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      flex: 1;
+    }
+
+    .btn-secondary {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: var(--border);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(255, 107, 53, 0.4);
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      z-index: 1000;
+      animation: slideDown 0.3s ease;
+      display: none;
+    }
+
+    .toast.show {
+      display: block;
+    }
+
+    .toast-success {
+      background: var(--success);
+      color: white;
+    }
+
+    .toast-error {
+      background: var(--error);
+      color: white;
+    }
+
+    .toast-info {
+      background: var(--accent-primary);
+      color: white;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+      to { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+
+    /* Footer branding */
+    .dialog-footer {
+      text-align: center;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+  </style>
+</head>
+<body>
+  <div id="toast" class="toast"></div>
+
+  <div class="dialog">
+    <div class="dialog-header">
+      <img class="dialog-icon" src="icon.png" alt="logo">
+      <div class="dialog-title">AI 想结束了</div>
+    </div>
+
+    <div class="dialog-reason">
+      <span class="dialog-reason-label">结束原因</span>
+      <span id="dialogReason">任务已完成</span>
+    </div>
+
+    <!-- 文本输入区域 -->
+    <div class="input-container">
+      <label class="input-label">补充指令（可选） <span class="upload-hint">拖拽/Ctrl+V 粘贴图片</span></label>
+      <textarea class="dialog-input" id="dialogInput" rows="3" placeholder="输入新的指令让 AI 继续工作..."></textarea>
+    </div>
+    <input type="file" id="imageFileInput" accept="image/*" multiple style="display: none;" onchange="handleImageSelect(event)">
+
+    <!-- 图片预览区域（紧凑样式，仅上传后显示） -->
+    <div class="att-section" id="imgSection">
+      <div class="att-title">🖼️ 已上传图片 <button class="btn btn-secondary" style="padding:2px 8px;font-size:11px;margin-left:8px;" onclick="clearAllImages()">清空</button></div>
+      <div class="att-list" id="imagesGrid"></div>
+    </div>
+
+    <!-- 快捷键提示 -->
+    <div class="shortcuts-hint">
+      <span class="shortcut-key"><kbd>Ctrl+Enter</kbd> 继续</span>
+      <span class="shortcut-key"><kbd>Esc</kbd> 结束</span>
+      <span class="shortcut-key"><kbd>Ctrl+U</kbd> 上传图片</span>
+      <span class="shortcut-key"><kbd>Ctrl+V</kbd> 粘贴图片</span>
+    </div>
+
+    <!-- 按钮 -->
+    <div class="dialog-buttons">
+      <button class="btn btn-secondary" onclick="respondDialog('stop')">
+        ⏹️ 结束
+      </button>
+      <button class="btn btn-primary" onclick="respondDialog('continue')">
+        ▶️ 继续
+      </button>
+    </div>
+
+    <div class="dialog-footer">
+牛马模式 - 让 AI 不再偷懒
+    </div>
+  </div>
+
+  <script>
+    const vscode = acquireVsCodeApi();
+    let currentDialogRequest = null;
+    let uploadedImages = []; // 支持多图
+
+    // 接收来自扩展的消息
+    window.addEventListener('message', (event) => {
+      const message = event.data;
+      
+      if (message.type === 'showDialog') {
+        // 如果已经收到过相同请求，忽略重复消息
+        if (currentDialogRequest && currentDialogRequest.id === message.request.id) {
+          return;
+        }
+        
+        currentDialogRequest = message.request;
+        document.getElementById('dialogReason').textContent = message.request.reason;
+        document.getElementById('dialogInput').value = '';
+        uploadedImages = [];
+        resetImageUpload();
+        
+        // 发送确认消息给扩展，表示已收到弹窗数据
+        vscode.postMessage({ type: 'dialogReady', requestId: message.request.id });
+        console.log('[Dialog] 已收到弹窗请求:', message.request.reason);
+        
+        // 聚焦到输入框
+        setTimeout(() => {
+          document.getElementById('dialogInput').focus();
+        }, 100);
+      }
+    });
+
+    // 触发图片上传
+    function triggerImageUpload() {
+      document.getElementById('imageFileInput').click();
+    }
+
+    // 处理图片选择（支持多图）
+    function handleImageSelect(event) {
+      const files = event.target.files;
+      for (let i = 0; i < files.length; i++) {
+        processImageFile(files[i]);
+      }
+      event.target.value = ''; // 重置以便重复选择同一文件
+    }
+
+    // 处理图片文件（支持多图）
+    function processImageFile(file) {
+      if (!file.type.startsWith('image/')) {
+        showToast('请选择图片文件', 'error');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const imageData = e.target.result;
+        uploadedImages.push(imageData);
+        renderImagesPreview();
+        showToast(`已添加 ${uploadedImages.length} 张图片`, 'success');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // 渲染多图预览（紧凑样式）
+    function renderImagesPreview() {
+      const imgSection = document.getElementById('imgSection');
+      const imagesGrid = document.getElementById('imagesGrid');
+
+      if (uploadedImages.length === 0) {
+        imgSection.classList.remove('show');
+        return;
+      }
+
+      imagesGrid.innerHTML = uploadedImages.map((img, idx) => `
+        <div class="att-img">
+          <img src="${img}" alt="图片${idx + 1}">
+          <button class="idel" onclick="removeImage(${idx})">✕</button>
+        </div>
+      `).join('');
+
+      imgSection.classList.add('show');
+    }
+
+    // 移除单张图片
+    function removeImage(index) {
+      uploadedImages.splice(index, 1);
+      renderImagesPreview();
+    }
+
+    // 清空所有图片
+    function clearAllImages() {
+      uploadedImages = [];
+      renderImagesPreview();
+      document.getElementById('imageFileInput').value = '';
+    }
+
+    // 重置图片上传区域
+    function resetImageUpload() {
+      const imgSection = document.getElementById('imgSection');
+      if (imgSection) imgSection.classList.remove('show');
+    }
+
+    // 响应对话框
+    function respondDialog(action) {
+      if (!currentDialogRequest) {
+        console.error('[Dialog] 错误: currentDialogRequest 为 null，无法响应');
+        showToast('弹窗未正确加载，请关闭后重试', 'error');
+        return;
+      }
+      
+      const userInput = document.getElementById('dialogInput').value.trim();
+      
+      const message = {
+        type: 'dialogResponse',
+        requestId: currentDialogRequest.id,
+        action: action,
+        userInput: userInput
+      };
+
+      // 支持多图
+      if (uploadedImages.length > 0) {
+        message.images = uploadedImages;
+        // 兼容旧版本，也发送第一张图片
+        message.imageData = uploadedImages[0];
+      }
+      
+      vscode.postMessage(message);
+      
+      currentDialogRequest = null;
+      uploadedImages = [];
+    }
+
+    // 显示Toast
+    function showToast(text, level = 'info') {
+      const toast = document.getElementById('toast');
+      toast.textContent = text;
+      toast.className = `toast toast-${level} show`;
+      
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2000);
+    }
+
+    // 全局键盘事件处理
+    document.addEventListener('keydown', (e) => {
+      // Esc 键 - 结束
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        respondDialog('stop');
+      }
+
+      // Ctrl+Enter 键 - 继续
+      if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+        e.preventDefault();
+        respondDialog('continue');
+      }
+
+      // Ctrl+V - 粘贴图片
+      if ((e.ctrlKey || e.metaKey) && e.key === 'v') {
+        // 让粘贴事件自然触发
+      }
+      
+      // Ctrl+U - 上传图片
+      if ((e.ctrlKey || e.metaKey) && e.key === 'u') {
+        e.preventDefault();
+        triggerImageUpload();
+      }
+    });
+
+    // 处理拖拽上传（在输入框上拖拽）
+    const dialogInput = document.getElementById('dialogInput');
+    if (dialogInput) {
+      dialogInput.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dialogInput.style.borderColor = 'var(--success)';
+        dialogInput.style.background = 'rgba(76, 175, 80, 0.1)';
+      });
+
+      dialogInput.addEventListener('dragleave', (e) => {
+        e.preventDefault();
+        dialogInput.style.borderColor = '';
+        dialogInput.style.background = '';
+      });
+
+      dialogInput.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dialogInput.style.borderColor = '';
+        dialogInput.style.background = '';
+        
+        const files = e.dataTransfer.files;
+        for (let i = 0; i < files.length; i++) {
+          processImageFile(files[i]);
+        }
+      });
+    }
+
+    // 处理粘贴事件
+    document.addEventListener('paste', async (e) => {
+      const clipboardData = e.clipboardData || window.clipboardData;
+      
+      if (clipboardData) {
+        const items = clipboardData.items;
+        
+        for (let i = 0; i < items.length; i++) {
+          const item = items[i];
+          
+          if (item.type.indexOf('image') !== -1) {
+            e.preventDefault();
+            const file = item.getAsFile();
+            if (file) {
+              processImageFile(file);
+            }
+            return;
+          }
+        }
+      }
+    });
+
+    // 页面加载后聚焦输入框
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.getElementById('dialogInput').focus();
+      }, 200);
+    });
+  </script>
+</body>
+</html>
