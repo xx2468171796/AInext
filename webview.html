@@ -444,7 +444,7 @@
         </select>
         <input type="password" id="aiApiKey" placeholder="API Key" style="padding:8px;border-radius:6px;border:1px solid var(--stroke);background:var(--bg1);color:var(--fg0);font-size:12px;">
         <input type="text" id="aiApiUrl" placeholder="API URL" style="padding:8px;border-radius:6px;border:1px solid var(--stroke);background:var(--bg1);color:var(--fg0);font-size:12px;">
-        <select id="aiModel" style="padding:8px;border-radius:6px;border:1px solid var(--stroke);background:var(--bg1);color:var(--fg0);font-size:12px;">
+        <select id="aiModel" onchange="toggleCustomModel()" style="padding:8px;border-radius:6px;border:1px solid var(--stroke);background:var(--bg1);color:var(--fg0);font-size:12px;">
           <option value="GLM-4.7">GLM-4.7 (最强编程)</option>
           <option value="GLM-4.6">GLM-4.6</option>
           <option value="GLM-4.5">GLM-4.5 (旗舰)</option>
@@ -452,7 +452,9 @@
           <option value="GLM-4.5-AirX">GLM-4.5-AirX (极速)</option>
           <option value="GLM-4.5-X">GLM-4.5-X (极速响应)</option>
           <option value="GLM-4.5-Flash">GLM-4.5-Flash (免费)</option>
+          <option value="custom">自定义...</option>
         </select>
+        <input type="text" id="aiModelCustom" placeholder="输入自定义模型名" style="padding:8px;border-radius:6px;border:1px solid var(--stroke);background:var(--bg1);color:var(--fg0);font-size:12px;display:none;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-top:4px;">
           <span style="font-size:12px;color:var(--fg2);">🧠 思考模式</span>
           <label class="switch">
@@ -623,14 +625,24 @@
       const defaults = platformDefaults[platform] || platformDefaults.siliconflow;
       document.getElementById('aiApiUrl').value = defaults.url;
       document.getElementById('aiModel').value = defaults.model;
+      document.getElementById('aiModelCustom').style.display = 'none';
+    }
+
+    function toggleCustomModel() {
+      const modelSelect = document.getElementById('aiModel');
+      const customInput = document.getElementById('aiModelCustom');
+      customInput.style.display = modelSelect.value === 'custom' ? 'block' : 'none';
     }
 
     function saveAiOptimizerConfig() {
+      const modelSelect = document.getElementById('aiModel');
+      const customInput = document.getElementById('aiModelCustom');
+      const model = modelSelect.value === 'custom' ? customInput.value.trim() : modelSelect.value;
       const config = {
         platform: document.getElementById('aiPlatform').value,
         apiKey: document.getElementById('aiApiKey').value,
         apiUrl: document.getElementById('aiApiUrl').value,
-        model: document.getElementById('aiModel').value,
+        model: model,
         enabled: document.getElementById('aiOptimizerToggle').checked,
         customPrompt: document.getElementById('aiCustomPrompt').value,
         thinkingMode: document.getElementById('aiThinkingMode').checked
@@ -639,13 +651,23 @@
       showToast('AI 优化配置已保存', 'success');
     }
 
+    const presetModels = ['GLM-4.7','GLM-4.6','GLM-4.5','GLM-4.5-Air','GLM-4.5-AirX','GLM-4.5-X','GLM-4.5-Flash'];
+    
     function updateAiOptimizerUI(config) {
       if (!config) return;
       document.getElementById('aiOptimizerToggle').checked = config.enabled || false;
       document.getElementById('aiPlatform').value = config.platform || 'zhipu';
       document.getElementById('aiApiKey').value = config.apiKey || '';
       document.getElementById('aiApiUrl').value = config.apiUrl || platformDefaults.zhipu.url;
-      document.getElementById('aiModel').value = config.model || platformDefaults.zhipu.model;
+      const model = config.model || platformDefaults.zhipu.model;
+      if (presetModels.includes(model)) {
+        document.getElementById('aiModel').value = model;
+        document.getElementById('aiModelCustom').style.display = 'none';
+      } else {
+        document.getElementById('aiModel').value = 'custom';
+        document.getElementById('aiModelCustom').value = model;
+        document.getElementById('aiModelCustom').style.display = 'block';
+      }
       document.getElementById('aiCustomPrompt').value = config.customPrompt || '';
       document.getElementById('aiThinkingMode').checked = config.thinkingMode !== false;
     }

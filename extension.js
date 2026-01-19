@@ -978,16 +978,17 @@ project_directory: 当前工作区的绝对路径（可选）`,
             <!-- AI 优化提示词区域 -->
             <div class="optimize-section" id="optimizeSection" style="display:${this._aiOptimizerConfig.enabled ? 'block' : 'none'};">
                 <div style="display:flex;gap:6px;align-items:center;margin-bottom:8px;flex-wrap:wrap;">
-                    <input type="text" id="aiModelInput" list="aiModelList" value="${this._aiOptimizerConfig.model || 'GLM-4.7'}" placeholder="模型" style="padding:5px 8px;border-radius:6px;border:1px solid var(--stroke);background:var(--bg2);color:var(--fg0);font-size:11px;width:100px;">
-                    <datalist id="aiModelList">
-                        <option value="GLM-4.7">最强编程</option>
-                        <option value="GLM-4.6">GLM-4.6</option>
-                        <option value="GLM-4.5">旗舰</option>
-                        <option value="GLM-4.5-Air">高性价比</option>
-                        <option value="GLM-4.5-AirX">极速</option>
-                        <option value="GLM-4.5-X">极速响应</option>
-                        <option value="GLM-4.5-Flash">免费</option>
-                    </datalist>
+                    <select id="aiModelInput" style="padding:5px 8px;border-radius:6px;border:1px solid var(--stroke);background:var(--bg2);color:var(--fg0);font-size:11px;width:110px;">
+                        <option value="GLM-4.7" ${this._aiOptimizerConfig.model === 'GLM-4.7' ? 'selected' : ''}>GLM-4.7 最强</option>
+                        <option value="GLM-4.6" ${this._aiOptimizerConfig.model === 'GLM-4.6' ? 'selected' : ''}>GLM-4.6</option>
+                        <option value="GLM-4.5" ${this._aiOptimizerConfig.model === 'GLM-4.5' ? 'selected' : ''}>GLM-4.5 旗舰</option>
+                        <option value="GLM-4.5-Air" ${this._aiOptimizerConfig.model === 'GLM-4.5-Air' ? 'selected' : ''}>Air 性价比</option>
+                        <option value="GLM-4.5-AirX" ${this._aiOptimizerConfig.model === 'GLM-4.5-AirX' ? 'selected' : ''}>AirX 极速</option>
+                        <option value="GLM-4.5-X" ${this._aiOptimizerConfig.model === 'GLM-4.5-X' ? 'selected' : ''}>X 极速</option>
+                        <option value="GLM-4.5-Flash" ${this._aiOptimizerConfig.model === 'GLM-4.5-Flash' ? 'selected' : ''}>Flash 免费</option>
+                        <option value="custom" ${!['GLM-4.7','GLM-4.6','GLM-4.5','GLM-4.5-Air','GLM-4.5-AirX','GLM-4.5-X','GLM-4.5-Flash'].includes(this._aiOptimizerConfig.model) ? 'selected' : ''}>自定义...</option>
+                    </select>
+                    <input type="text" id="aiModelCustom" placeholder="自定义模型" value="${!['GLM-4.7','GLM-4.6','GLM-4.5','GLM-4.5-Air','GLM-4.5-AirX','GLM-4.5-X','GLM-4.5-Flash'].includes(this._aiOptimizerConfig.model) ? this._aiOptimizerConfig.model : ''}" style="padding:5px 8px;border-radius:6px;border:1px solid var(--stroke);background:var(--bg2);color:var(--fg0);font-size:11px;width:80px;display:${!['GLM-4.7','GLM-4.6','GLM-4.5','GLM-4.5-Air','GLM-4.5-AirX','GLM-4.5-X','GLM-4.5-Flash'].includes(this._aiOptimizerConfig.model) ? 'block' : 'none'}">
                     <input type="number" id="aiMaxTokens" value="${this._aiOptimizerConfig.maxTokens || 1000}" min="100" max="8000" step="100" placeholder="tokens" style="padding:5px 8px;border-radius:6px;border:1px solid var(--stroke);background:var(--bg2);color:var(--fg0);font-size:11px;width:70px;">
                     <label style="display:flex;align-items:center;gap:3px;font-size:11px;color:var(--fg1);cursor:pointer;">
                         <input type="checkbox" id="aiThinkingToggle" ${this._aiOptimizerConfig.thinkingMode ? 'checked' : ''} style="cursor:pointer;">
@@ -1228,6 +1229,15 @@ project_directory: 当前工作区的绝对路径（可选）`,
         let optimizedText = '';
         let originalText = '';
         
+        // 模型选择切换自定义输入
+        const modelSelect = document.getElementById('aiModelInput');
+        const modelCustomInput = document.getElementById('aiModelCustom');
+        if (modelSelect && modelCustomInput) {
+            modelSelect.addEventListener('change', function() {
+                modelCustomInput.style.display = this.value === 'custom' ? 'block' : 'none';
+            });
+        }
+        
         function optimizePrompt() {
             const content = feedbackEl.value.trim();
             if (!content) {
@@ -1236,9 +1246,10 @@ project_directory: 当前工作区的绝对路径（可选）`,
             }
             
             const modelInput = document.getElementById('aiModelInput');
+            const modelCustom = document.getElementById('aiModelCustom');
             const thinkingToggle = document.getElementById('aiThinkingToggle');
             const maxTokensInput = document.getElementById('aiMaxTokens');
-            const model = modelInput ? modelInput.value.trim() : 'GLM-4.7';
+            const model = modelInput && modelInput.value === 'custom' && modelCustom ? modelCustom.value.trim() : (modelInput ? modelInput.value.trim() : 'GLM-4.7');
             const thinkingMode = thinkingToggle ? thinkingToggle.checked : false;
             const maxTokens = maxTokensInput ? parseInt(maxTokensInput.value) || 1000 : 1000;
             

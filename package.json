@@ -2,7 +2,7 @@
   "name": "alone-mode",
   "displayName": "Alone模式 - AI持久输出助手",
   "description": "免费开源版 - AI结束前自动弹窗确认，让AI持续工作直到你满意",
-  "version": "4.1.4",
+  "version": "4.1.5",
   "publisher": "alone",
   "icon": "icon.ico",
   "engines": {
