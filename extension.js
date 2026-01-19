@@ -985,6 +985,7 @@ project_directory: 当前工作区的绝对路径（可选）`,
                         <option value="GLM-4.5">旗舰</option>
                         <option value="GLM-4.5-Air">高性价比</option>
                         <option value="GLM-4.5-AirX">极速</option>
+                        <option value="GLM-4.5-X">极速响应</option>
                         <option value="GLM-4.5-Flash">免费</option>
                     </datalist>
                     <input type="number" id="aiMaxTokens" value="${this._aiOptimizerConfig.maxTokens || 1000}" min="100" max="8000" step="100" placeholder="tokens" style="padding:5px 8px;border-radius:6px;border:1px solid var(--stroke);background:var(--bg2);color:var(--fg0);font-size:11px;width:70px;">
