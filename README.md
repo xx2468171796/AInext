@@ -1,156 +1,184 @@
-# Alone模式 - AI持久输出助手
+﻿# Alone妯″紡 - AI鎸佷箙杈撳嚭鍔╂墜
 
-> 让 AI 不再偷懒，持续工作直到你满意
+> 璁?AI 涓嶅啀鍋锋噿锛屾寔缁伐浣滅洿鍒颁綘婊℃剰
 
-## 📢 项目信息
+## 馃摙 椤圭洰淇℃伅
 
-**作者**：孤独制作  
-**电报群**：[点击加入](https://t.me/+RZMe7fnvvUg1OWJl)  
+**浣滆€?*锛氬鐙埗浣? 
+**鐢垫姤缇?*锛歔鐐瑰嚮鍔犲叆](https://t.me/+RZMe7fnvvUg1OWJl)  
 
 ---
 
-## 📖 简介
+## 馃摉 绠€浠?
 
-**Alone模式** 是一个 VSCode/Windsurf 扩展，通过在 AI 想要结束对话时弹出确认窗口，让用户决定是否继续或结束。这样可以让 AI 持续工作，避免 AI "偷懒"提前结束任务。
+**Alone妯″紡** 鏄竴涓?VSCode/Windsurf 鎵╁睍锛岄€氳繃鍦?AI 鎯宠缁撴潫瀵硅瘽鏃跺脊鍑虹‘璁ょ獥鍙ｏ紝璁╃敤鎴峰喅瀹氭槸鍚︾户缁垨缁撴潫銆傝繖鏍峰彲浠ヨ AI 鎸佺画宸ヤ綔锛岄伩鍏?AI "鍋锋噿"鎻愬墠缁撴潫浠诲姟銆?
 
-## ✨ 核心功能
+## 鉁?鏍稿績鍔熻兘
 
-### 1. 🔔 弹窗确认机制
-- AI 想结束时自动弹出确认窗口
-- 用户可以选择「继续」或「结束」
-- 支持输入反馈指令让 AI 继续工作
-- 支持图片上传（Ctrl+V 粘贴 / Ctrl+U 上传）
+### 1. 馃敂 寮圭獥纭鏈哄埗
+- AI 鎯崇粨鏉熸椂鑷姩寮瑰嚭纭绐楀彛
+- 鐢ㄦ埛鍙互閫夋嫨銆岀户缁€嶆垨銆岀粨鏉熴€?
+- 鏀寔杈撳叆鍙嶉鎸囦护璁?AI 缁х画宸ヤ綔
+- 鏀寔鍥剧墖涓婁紶锛圕trl+V 绮樿创 / Ctrl+U 涓婁紶锛?
 
-### 2. ✨ AI 提示词优化
-基于智谱 AI 编程套餐，优化你的输入提示词：
+### 2. 鉁?AI 鎻愮ず璇嶄紭鍖?
+鍩轰簬鏅鸿氨 AI 缂栫▼濂楅锛屼紭鍖栦綘鐨勮緭鍏ユ彁绀鸿瘝锛?
 
-| 功能 | 说明 |
+| 鍔熻兘 | 璇存槑 |
 |------|------|
-| **模型选择** | 支持 GLM-4.7/4.6/4.5 系列，可自定义输入 |
-| **思考模式** | 开启/关闭深度思考 |
-| **Max Tokens** | 自定义 100-8000 |
-| **预设提示词** | 自定义预设 + 用户内容组合 |
+| **妯″瀷閫夋嫨** | 鏀寔 GLM-4.7/4.6/4.5 绯诲垪锛屽彲鑷畾涔夎緭鍏?|
+| **鎬濊€冩ā寮?* | 寮€鍚?鍏抽棴娣卞害鎬濊€?|
+| **Max Tokens** | 鑷畾涔?100-8000 |
+| **棰勮鎻愮ず璇?* | 鑷畾涔夐璁?+ 鐢ㄦ埛鍐呭缁勫悎 |
 
-### 3. 📊 统计功能
-- 累计弹窗次数
-- 会话数统计
-- 本轮交互次数
-- 可单独重置
+### 3. 馃搳 缁熻鍔熻兘
+- 绱寮圭獥娆℃暟
+- 浼氳瘽鏁扮粺璁?
+- 鏈疆浜や簰娆℃暟
+- 鍙崟鐙噸缃?
 
-### 4. 🎵 自定义提示音
-- 支持自定义 WAV 提示音
-- 内置默认提示音
-- 可测试播放
+### 4. 馃幍 鑷畾涔夋彁绀洪煶
+- 鏀寔鑷畾涔?WAV 鎻愮ず闊?
+- 鍐呯疆榛樿鎻愮ず闊?
+- 鍙祴璇曟挱鏀?
 
-### 5. 📚 历史记录
-- 自动保存对话历史
-- 可加载历史上下文
-- 支持清空历史
+### 5. 馃摎 鍘嗗彶璁板綍
+- 鑷姩淇濆瓨瀵硅瘽鍘嗗彶
+- 鍙姞杞藉巻鍙蹭笂涓嬫枃
+- 鏀寔娓呯┖鍘嗗彶
 
-## 🚀 安装方法
+## 馃殌 瀹夎鏂规硶
 
-### 方法一：从源码打包
+### 鏂规硶涓€锛氫粠婧愮爜鎵撳寘
 
 ```bash
-# 克隆仓库
+# 鍏嬮殕浠撳簱
 git clone https://github.com/xx2468171796/AInext.git
 cd AInext
 
-# 打包扩展
+# 鎵撳寘鎵╁睍
 npx @vscode/vsce package --allow-missing-repository
 
-# 安装生成的 .vsix 文件
+# 瀹夎鐢熸垚鐨?.vsix 鏂囦欢
 ```
 
-### 方法二：直接安装 VSIX
+### 鏂规硶浜岋細鐩存帴瀹夎 VSIX
 
-1. 下载最新版本 `.vsix` 文件
-2. 在 VSCode/Windsurf 中：
-   - 按 `Ctrl+Shift+P`
-   - 输入 `Extensions: Install from VSIX...`
-   - 选择下载的 `.vsix` 文件
-3. 重启编辑器
+1. 涓嬭浇鏈€鏂扮増鏈?`.vsix` 鏂囦欢
+2. 鍦?VSCode/Windsurf 涓細
+   - 鎸?`Ctrl+Shift+P`
+   - 杈撳叆 `Extensions: Install from VSIX...`
+   - 閫夋嫨涓嬭浇鐨?`.vsix` 鏂囦欢
+3. 閲嶅惎缂栬緫鍣?
 
-## ⚙️ 配置说明
+## 鈿欙笍 閰嶇疆璇存槑
 
-### AI 优化提示词配置
+### AI 浼樺寲鎻愮ず璇嶉厤缃?
 
-在侧边栏「Alone模式」面板中配置：
+鍦ㄤ晶杈规爮銆孉lone妯″紡銆嶉潰鏉夸腑閰嶇疆锛?
 
-1. **启用 AI 优化** - 开关
-2. **平台选择** - 智谱 Zhipu
-3. **API Key** - 从 [智谱开放平台](https://bigmodel.cn/usercenter/proj-mgmt/apikeys) 获取
+1. **鍚敤 AI 浼樺寲** - 寮€鍏?
+2. **骞冲彴閫夋嫨** - 鏅鸿氨 Zhipu
+3. **API Key** - 浠?[鏅鸿氨寮€鏀惧钩鍙癩(https://bigmodel.cn/usercenter/proj-mgmt/apikeys) 鑾峰彇
 4. **API URL** - `https://open.bigmodel.cn/api/coding/paas/v4/chat/completions`
-5. **模型** - 默认 GLM-4.7
-6. **思考模式** - 默认关闭（加速）
-7. **预设提示词** - 可选
+5. **妯″瀷** - 榛樿 GLM-4.7
+6. **鎬濊€冩ā寮?* - 榛樿鍏抽棴锛堝姞閫燂級
+7. **棰勮鎻愮ず璇?* - 鍙€?
 
-### 弹窗触发脚本
+### 寮圭獥瑙﹀彂鑴氭湰
 
-扩展会自动在工作区创建 `.windsurfrules` 文件，配置 AI 结束时的弹窗触发命令。
+鎵╁睍浼氳嚜鍔ㄥ湪宸ヤ綔鍖哄垱寤?`.windsurfrules` 鏂囦欢锛岄厤缃?AI 缁撴潫鏃剁殑寮圭獥瑙﹀彂鍛戒护銆?
 
-## 📁 项目结构
+## 馃搧 椤圭洰缁撴瀯
 
 ```
 AInext/
-├── extension.js       # 扩展主逻辑
-├── webview.html       # 侧边栏 UI
-├── dialog.html        # 弹窗 UI（备用）
-├── alonemoshi.js      # 弹窗触发脚本
-├── package.json       # 扩展配置
-├── default_sound.wav  # 默认提示音
-├── icon.ico           # 扩展图标
-├── icon.svg           # 扩展图标 SVG
-├── LICENSE            # MIT 许可证
-├── .windsurfrules     # Windsurf AI 规则示例
-└── README.md          # 本文档
+鈹溾攢鈹€ extension.js       # 鎵╁睍涓婚€昏緫
+鈹溾攢鈹€ webview.html       # 渚ц竟鏍?UI
+鈹溾攢鈹€ dialog.html        # 寮圭獥 UI锛堝鐢級
+鈹溾攢鈹€ alonemoshi.js      # 寮圭獥瑙﹀彂鑴氭湰
+鈹溾攢鈹€ package.json       # 鎵╁睍閰嶇疆
+鈹溾攢鈹€ default_sound.wav  # 榛樿鎻愮ず闊?
+鈹溾攢鈹€ icon.ico           # 鎵╁睍鍥炬爣
+鈹溾攢鈹€ icon.svg           # 鎵╁睍鍥炬爣 SVG
+鈹溾攢鈹€ LICENSE            # MIT 璁稿彲璇?
+鈹溾攢鈹€ .windsurfrules     # Windsurf AI 瑙勫垯绀轰緥
+鈹斺攢鈹€ README.md          # 鏈枃妗?
 ```
 
-## 🔧 技术栈
+## 馃敡 鎶€鏈爤
 
-- **VSCode Extension API** - 扩展开发框架
-- **Webview** - 侧边栏和弹窗 UI
-- **Node.js** - 弹窗触发脚本
-- **智谱 AI API** - 提示词优化
+- **VSCode Extension API** - 鎵╁睍寮€鍙戞鏋?
+- **Webview** - 渚ц竟鏍忓拰寮圭獥 UI
+- **Node.js** - 寮圭獥瑙﹀彂鑴氭湰
+- **鏅鸿氨 AI API** - 鎻愮ず璇嶄紭鍖?
 
-## 📝 更新日志
+## 馃摑 鏇存柊鏃ュ織
 
 ### v4.1.1 (2026-01-19)
-- 重构项目结构
-- 移除冗余文件
+- 閲嶆瀯椤圭洰缁撴瀯
+- 绉婚櫎鍐椾綑鏂囦欢
 
 ### v4.1.0
-- 弹窗支持自定义模型输入
-- 弹窗支持自定义 maxTokens (100-8000)
-- 默认模型改为 GLM-4.7（付费模型）
+- 寮圭獥鏀寔鑷畾涔夋ā鍨嬭緭鍏?
+- 寮圭獥鏀寔鑷畾涔?maxTokens (100-8000)
+- 榛樿妯″瀷鏀逛负 GLM-4.7锛堜粯璐规ā鍨嬶級
 
 ### v4.0.x
-- 品牌重命名 niuma → alone
-- 集成智谱编程套餐 API
-- 添加多模型选择
-- 添加思考模式开关
-- 添加自定义预设提示词
-- 优化响应速度
+- 鍝佺墝閲嶅懡鍚?niuma 鈫?alone
+- 闆嗘垚鏅鸿氨缂栫▼濂楅 API
+- 娣诲姞澶氭ā鍨嬮€夋嫨
+- 娣诲姞鎬濊€冩ā寮忓紑鍏?
+- 娣诲姞鑷畾涔夐璁炬彁绀鸿瘝
+- 浼樺寲鍝嶅簲閫熷害
 
-## 📄 License
+## 馃搫 License
 
 MIT License
 
 ---
 
-## 🤝 反馈与支持
+## 馃 鍙嶉涓庢敮鎸?
 
-如有问题或建议，欢迎：
+濡傛湁闂鎴栧缓璁紝娆㈣繋锛?
 
-- 📮 提交 [Issue](https://github.com/xx2468171796/AInext/issues)
-- 💬 加入 [电报群](https://t.me/+RZMe7fnvvUg1OWJl) 交流
+- 馃摦 鎻愪氦 [Issue](https://github.com/xx2468171796/AInext/issues)
+- 馃挰 鍔犲叆 [鐢垫姤缇(https://t.me/+RZMe7fnvvUg1OWJl) 浜ゆ祦
 
 ---
 
 <div align="center">
 
-**⭐ 如果觉得有用，欢迎 Star 支持！**
+**猸?濡傛灉瑙夊緱鏈夌敤锛屾杩?Star 鏀寔锛?*
 
-Made with ❤️ by 孤独制作
+Made with 鉂わ笍 by 瀛ょ嫭鍒朵綔
 
 </div>
+---
+
+## 支持作者 / 打赏
+
+如果这个项目对你有帮助，欢迎支持作者继续维护更新（不强制，量力而行）。
+
+![赞赏码](PixPin_2026-01-04_21-45-29.png)
+
+### USDT (TRC20)
+
+- 地址：TNp2BLnqrsgGPjrABQwvTq6cWyT8iRKk3D
+- 网络：TRC20
+
+![USDT TRC20 QR](4c16614c5d097e583f728e3c3671b10e.jpg)
+
+## Support / Donate
+
+If this project helps you, consider supporting the author (optional).
+
+![Donate QR](PixPin_2026-01-04_21-45-29.png)
+
+### USDT (TRC20)
+
+- Address: TNp2BLnqrsgGPjrABQwvTq6cWyT8iRKk3D
+- Network: TRC20
+
+![USDT TRC20 QR](4c16614c5d097e583f728e3c3671b10e.jpg)
+
